@@ -86,5 +86,18 @@ public class Productos_Dao {
        return pr;
    }
       
-  
+  public void UpdateProductQty(String pn, int subtractQty){
+      Productos prOld = GetProduct(pn);
+      int newQty = prOld.getQty() - subtractQty;
+      
+      String sql = "UPDATE inventory SET qty = '" + newQty + "' WHERE item='" + pn + "'";
+       try{
+           con = cn.getConnection();
+           ps = con.prepareStatement(sql);
+           int rows = ps.executeUpdate();
+           System.out.println("Updated rows: " + rows);
+       }catch(SQLException e) {
+           System.out.println(e.toString());
+       }
+  }
 }

@@ -362,6 +362,13 @@ public class AddSale extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "No product with that name exists");
                 return;
             }
+            
+            // Verify qty exists
+            if(pr.getQty() < Integer.parseInt(txt_qty_sale.getText())){
+                Clean_Sales();
+                JOptionPane.showMessageDialog(null, "Max qty for " + pr.getItem() + " is " + pr.getQty());
+                return;
+            }
 
             // Choose if item price is regular price or member price
             double price = 0;

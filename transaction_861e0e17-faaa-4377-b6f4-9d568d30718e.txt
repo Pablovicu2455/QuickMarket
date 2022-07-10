@@ -1,0 +1,12 @@
+2022-07-10T11:48:12.598059200
+TRANSACTION: 861e0e17-faaa-4377-b6f4-9d568d30718e
+ITEM                  QUANTITY              UNIT PRICE            TOTAL                 
+Cola                  16                    1.00                  16.00                 
+**********************
+TOTAL NUMBER OF ITEMS SOLD: 16
+SUB-TOTAL: $16.0
+TAX (6.5%): $0.0
+TOTAL: $16.0
+CASH: $20.0
+CHANGE: $4.0
+**********************

@@ -3,9 +3,8 @@ package Interface;
 
 import Classes.Sales;
 import Classes.Sales_Dao;
+import Classes.Productos_Dao;
 import Classes.Transaction_Totals;
-import java.awt.Desktop;
-import java.io.File;
 import java.io.FileWriter;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,6 +28,7 @@ public class CartView extends javax.swing.JFrame {
    
      Sales sl = new Sales();
      Sales_Dao sld = new Sales_Dao();
+     Productos_Dao prd = new Productos_Dao();
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -403,7 +403,7 @@ public class CartView extends javax.swing.JFrame {
         
         // Print to file
         outputFile = "transaction_" + transactionUid + ".txt";
-        //File nf = new File(outputFile);
+       
         try{
             FileWriter fw = new FileWriter(outputFile);
             
@@ -416,6 +416,7 @@ public class CartView extends javax.swing.JFrame {
                 Double unitTotal = sl.getPrice()*sl.getQty();
                 String tableRow = String.format("%-22s%-22d%-22.2f%-22.2f", sl.getItem(), sl.getQty(), sl.getPrice(), unitTotal);
                 fw.write(tableRow+ "\n");
+                prd.UpdateProductQty(sl.getItem(), sl.getQty());
             }
             
             fw.write("**********************"+ "\n");
@@ -427,9 +428,7 @@ public class CartView extends javax.swing.JFrame {
             fw.write("CHANGE: $" + amountToPay+ "\n");
             fw.write("**********************"+ "\n");
             fw.close();
-            
-            Desktop de = Desktop.getDesktop();
-            de.open(fw);
+           
         }catch(Exception e){
             JOptionPane.showMessageDialog(null,"Cannot write reciept to file");
         }
