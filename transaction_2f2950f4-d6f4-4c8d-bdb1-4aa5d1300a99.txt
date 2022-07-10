@@ -1,0 +1,12 @@
+2022-07-10T11:11:30.606578300
+TRANSACTION: 2f2950f4-d6f4-4c8d-bdb1-4aa5d1300a99
+ITEM                  QUANTITY              UNIT PRICE            TOTAL                 
+Cola7                 12                    0.010000              0.120000              
+**********************
+TOTAL NUMBER OF ITEMS SOLD: 12
+SUB-TOTAL: $0.12
+TAX (6.5%): $0.0
+TOTAL: $0.12
+CASH: $1.0
+CHANGE: $0.88
+**********************
