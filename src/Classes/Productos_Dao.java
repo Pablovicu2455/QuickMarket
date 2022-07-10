@@ -65,7 +65,26 @@ public class Productos_Dao {
        return ListaCl;
    }
   
-     
+   public Productos GetProduct(String pn){
+       
+       String sql = "SELECT * FROM inventory WHERE item='" + pn + "'";
+       Productos pr = new Productos();
+       try{
+           con = cn.getConnection();
+           ps = con.prepareStatement(sql);
+           rs = ps.executeQuery();
+           rs.next();
+           pr.setItem(rs.getString("item"));
+           pr.setQty(rs.getInt("qty"));
+           pr.setPrice(rs.getDouble("price"));
+           pr.setMemprice(rs.getDouble("memprice"));
+           pr.setTax(rs.getString("tax"));
+       }catch(SQLException e) {
+           pr.setItem("None");
+           System.out.println(e.toString());
+       }
+       return pr;
+   }
       
   
 }

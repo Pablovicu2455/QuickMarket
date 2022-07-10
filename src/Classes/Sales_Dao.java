@@ -16,19 +16,18 @@ public class Sales_Dao {
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
-    
-    String uid = UUID.randomUUID().toString();
 
-    public boolean RegistrarSales(Sales pr){
-        String sql = "INSERT INTO cartproducts (transactionId ,item, qty, price) VALUES (?,?,?,?)";
+    public boolean RegistrarSales(Sales sl){
+        String sql = "INSERT INTO cartproducts (transactionId ,item, qty, price, tax) VALUES (?,?,?,?,?)";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             
-            ps.setString(0,uid);
-            ps.setString(1, pr.getItem());
-            ps.setInt(2, pr.getQty());
-            ps.setDouble(3, pr.getPrice());
+            ps.setString(1,sl.getTransactionId());
+            ps.setString(2, sl.getItem());
+            ps.setInt(3, sl.getQty());
+            ps.setDouble(4, sl.getPrice());
+            ps.setString(5, sl.getTax());
             ps.execute();
             return true;
             
@@ -56,7 +55,7 @@ public class Sales_Dao {
            
            while (rs.next()) {               
                Sales pr = new Sales();
-               pr.setTransactionId(uid);
+               //pr.setTransactionId(rs.getSt);
                pr.setItem(rs.getString("item"));
                pr.setQty(rs.getInt("qty"));
                pr.setPrice(rs.getDouble("price"));

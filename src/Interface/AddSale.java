@@ -3,7 +3,10 @@ package Interface;
 
 import Classes.Productos;
 import Classes.Productos_Dao;
+import Classes.Sales;
+import Classes.Sales_Dao;
 import java.util.List;
+import java.util.UUID;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -11,7 +14,10 @@ import javax.swing.table.DefaultTableModel;
 public class AddSale extends javax.swing.JFrame {
 
    Productos pr = new Productos();
+   Sales sl = new Sales();
    Productos_Dao prd = new Productos_Dao();
+   Sales_Dao sld = new Sales_Dao();
+   String uid = UUID.randomUUID().toString();
     
     DefaultTableModel modelo = new DefaultTableModel();
     DefaultTableModel tmp = new DefaultTableModel();
@@ -398,14 +404,36 @@ public class AddSale extends javax.swing.JFrame {
     }//GEN-LAST:event_bt_refresh_SaleActionPerformed
 
     private void bt_addcartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addcartActionPerformed
-        // TODO add your handling code here:
-        
- 
-            prd.RegistrarProducto(pr);
+           
+        // Verify empty fields
+        if (!(txt_item_product.getText().compareTo("") == 0) && !(txt_qty_sale.getText().compareTo("") == 0)) {
+            // Verfiy item exists in DB
+            Productos pr = prd.GetProduct(txt_item_product.getText());
+            if(pr.getItem().compareTo("None") == 0){
+                Clean_Sales();
+                 JOptionPane.showMessageDialog(null, "No product with that name exists");
+                 return;
+            }
+   
+            // Choose if item price is regular price or member price
+            double price = 0;
+            if(txt_Member_Purchase.getSelectedItem().toString().compareTo("Regular Customer") == 0){
+                price = pr.getPrice();
+            } else {
+                price = pr.getMemprice();
+            }
             
+            // Send product to DB
+            sl.setTransactionId(uid);
+            sl.setItem(txt_item_product.getText());
+            sl.setQty(Integer.parseInt(txt_qty_sale.getText()));
+            sl.setPrice(price);
+            sl.setTax(pr.getTax());
+            sld.RegistrarSales(sl);
+           
             JOptionPane.showMessageDialog(null, "Product Succesfully Added");
-            clean_Products();
-            List_TableProduct();
+            Clean_Sales();
+           
             
         } else {
             JOptionPane.showMessageDialog(null, "Empty Fields");
@@ -451,4 +479,9 @@ public class AddSale extends javax.swing.JFrame {
     private javax.swing.JTextField txt_item_product;
     private javax.swing.JTextField txt_qty_sale;
     // End of variables declaration//GEN-END:variables
+
+private void Clean_Sales() {
+    txt_item_product.setText("");
+    txt_qty_sale.setText("");
+}
 }
