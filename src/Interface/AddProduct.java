@@ -284,6 +284,7 @@ public class AddProduct extends javax.swing.JFrame {
             pr.setItem(txt_item_product.getText());
             pr.setQty(Integer.parseInt(txt_quantity_product.getText()));
             pr.setPrice(Double.parseDouble(txt_price_product.getText()));
+            
             pr.setMemprice(Double.parseDouble(txt_memprice_product.getText()));
             pr.setTax((String) txt_tax_product.getSelectedItem());
             prd.RegistrarProducto(pr);

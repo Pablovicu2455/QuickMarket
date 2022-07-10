@@ -1,0 +1,12 @@
+2022-07-10T12:06:33.616870600
+TRANSACTION: 5d903a39-1410-4806-b637-d0c32abd6130
+ITEM                  QUANTITY              UNIT PRICE            TOTAL                 
+Fanta                 12                    2.00                  24.00                 
+**********************
+TOTAL NUMBER OF ITEMS SOLD: 12
+SUB-TOTAL: $24.0
+TAX (6.5%): $1.56
+TOTAL: $25.56
+CASH: $30.0
+CHANGE: $4.44
+**********************

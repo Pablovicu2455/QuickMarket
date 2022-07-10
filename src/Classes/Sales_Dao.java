@@ -38,6 +38,26 @@ public class Sales_Dao {
         } 
     }
     
+    public void UpdateTransactionState(String uid, String state){
+        try{
+            // Transactions DB
+            String sql = "UPDATE transactions SET state='" + state + "' WHERE transactionId='" + uid + "'";
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.executeUpdate();
+        }catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+            return;
+            
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+        }
+    }
+    
     public void SaveTransactionUid(String uid){
         try{
             // Transactions DB

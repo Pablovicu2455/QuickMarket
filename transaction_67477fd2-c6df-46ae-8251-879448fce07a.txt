@@ -1,0 +1,11 @@
+2022-07-10T11:59:53.094634900
+TRANSACTION: 67477fd2-c6df-46ae-8251-879448fce07a
+ITEM                  QUANTITY              UNIT PRICE            TOTAL                 
+**********************
+TOTAL NUMBER OF ITEMS SOLD: 0
+SUB-TOTAL: $0.0
+TAX (6.5%): $0.0
+TOTAL: $0.0
+CASH: $0.0
+CHANGE: $0.0
+**********************

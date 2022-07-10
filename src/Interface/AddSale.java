@@ -313,8 +313,8 @@ public class AddSale extends javax.swing.JFrame {
     private void ExitButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtomActionPerformed
         Menu jf2 = new Menu();
         jf2.show();
-        
        dispose();
+        
     }//GEN-LAST:event_ExitButtomActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
