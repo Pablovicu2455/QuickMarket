@@ -51,6 +51,7 @@ public class CartView extends javax.swing.JFrame {
         txt_cash_paid = new javax.swing.JTextField();
         txt_pay_print = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
+        bt_cancel_tr = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -164,10 +165,21 @@ public class CartView extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Cart Information");
 
+        bt_cancel_tr.setText("CANCEL  A TRANSACTION");
+        bt_cancel_tr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_cancel_trActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(45, 45, 45))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,12 +200,9 @@ public class CartView extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                        .addComponent(txt_items_sold, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_items_sold, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(bt_cancel_tr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addGap(45, 45, 45))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,9 +230,11 @@ public class CartView extends javax.swing.JFrame {
                         .addComponent(txt_total_cart)))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
-                .addComponent(txt_pay_print, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(8, 8, 8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txt_pay_print, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bt_cancel_tr, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -379,6 +390,7 @@ public class CartView extends javax.swing.JFrame {
 
     private void bt_Clear_CartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_Clear_CartActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_bt_Clear_CartActionPerformed
 
     private void tb_CartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_CartMouseClicked
@@ -400,6 +412,8 @@ public class CartView extends javax.swing.JFrame {
         amountToPay = amountPaid - transactionTotal;
         amountToPay = Math.floor(amountToPay * 100.00) / 100.00;
         JOptionPane.showMessageDialog(null, "Change: " + amountToPay);
+        
+        
         
         // Print to file
         outputFile = "transaction_" + transactionUid + ".txt";
@@ -433,13 +447,29 @@ public class CartView extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Cannot write reciept to file");
         }
         
+         // Exit to menu
+        
+        Menu jf2 = new Menu();
+        jf2.show();
+        
+       dispose();
+        
     }//GEN-LAST:event_txt_pay_printActionPerformed
 
     private void bt_Clear_CartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bt_Clear_CartMouseClicked
       
         sld.DeleteAllTransaction(transactionUid);
         List_TableCart();
+        RefreshTransactionTotals(ListarSld,0.065);
     }//GEN-LAST:event_bt_Clear_CartMouseClicked
+
+    private void bt_cancel_trActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_cancel_trActionPerformed
+        sld.DeleteAllTransaction(transactionUid);
+        sld.UpdateTransactionState(transactionUid, "Canceled");
+        Menu jf2 = new Menu();
+        jf2.show();
+       dispose();
+    }//GEN-LAST:event_bt_cancel_trActionPerformed
 
    
     public static void main(String args[]) {
@@ -454,6 +484,7 @@ public class CartView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ExitButtom;
     private javax.swing.JButton bt_Clear_Cart;
+    private javax.swing.JButton bt_cancel_tr;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
