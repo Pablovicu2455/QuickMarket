@@ -142,7 +142,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void SalButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalButtomActionPerformed
         // TODO add your handling code here:
-        QtMember jf2 = new QtMember();
+        AddSale jf2 = new AddSale();
         jf2.show();
         
         dispose();

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-public class Product_Dao {
+public class Productos_Dao {
     
     Conexion cn = new Conexion();
     Connection con;
@@ -16,17 +16,16 @@ public class Product_Dao {
     ResultSet rs;
     
     
-    public boolean RegistrarProducto(Product pr){
-        String sql = "INSERT INTO productos (item, quantity, regPrice, memPrice, tax) VALUES (?,?,?,?,?)";
+    public boolean RegistrarProducto(Productos pr){
+        String sql = "INSERT INTO inventory (item, qty, price, memprice, tax) VALUES (?,?,?,?,?)";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
-
-            ps.setString(0, pr.getItem());
-            ps.setInt(1, pr.getQty());
-            ps.setDouble(2, pr.getRegprice());
-            ps.setDouble(3, pr.getMemprice());
-            ps.setString(4,pr.getTax());
+            ps.setString(1, pr.getItem());
+            ps.setInt(2, pr.getQty());
+            ps.setDouble(3, pr.getPrice());
+            ps.setDouble(4, pr.getMemprice());
+            ps.setString(5,pr.getTax());
             ps.execute();
             return true;
             
@@ -44,31 +43,29 @@ public class Product_Dao {
     }
     
   public List ListarProductos(){
-       List<Product> ListaP = new ArrayList();
-       String sql = "SELECT * FROM productos";
+       List<Productos> ListaCl = new ArrayList();
+       String sql = "SELECT * FROM inventory";
        try {
            con = cn.getConnection();
            ps = con.prepareStatement(sql);
            rs = ps.executeQuery();
-           
-           
            while (rs.next()) {               
-               Product pr = new Product();
-               
-               pr.setId(rs.getInt("id"));
+               Productos pr = new Productos();
                pr.setItem(rs.getString("item"));
                pr.setQty(rs.getInt("qty"));
-               pr.setRegprice(rs.getDouble("price"));
+               pr.setPrice(rs.getDouble("price"));
                pr.setMemprice(rs.getDouble("memprice"));
                pr.setTax(rs.getString("tax"));
-               ListaP.add(pr);
+               ListaCl.add(pr);
           
            }
        } catch (SQLException e) {
            System.out.println(e.toString());
        }
-       return ListaP;
+       return ListaCl;
    }
-    
+  
+     
+      
   
 }
