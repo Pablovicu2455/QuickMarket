@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -17,12 +18,56 @@ public class Sales_Dao {
     PreparedStatement ps;
     ResultSet rs;
 
-    public boolean RegistrarSales(Sales sl){
-        String sql = "INSERT INTO cartproducts (transactionId ,item, qty, price, tax) VALUES (?,?,?,?,?)";
-        try {
+    public String getLatestActiveTransactionUID(){
+        String sql = "SELECT * FROM transactions WHERE state='Active' ORDER BY date DESC LIMIT 1";
+        try{
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            rs.next();
+            return rs.getString("transactionId");
+        }catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+            return null;            
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+        } 
+    }
+    
+    public void SaveTransactionUid(String uid){
+        try{
+            // Transactions DB
+            String sqlTrans = "INSERT INTO transactions (transactionId, state, date) VALUES (?,?,?)";
+            con = cn.getConnection();
+            ps = con.prepareStatement(sqlTrans);
+            ps.setString(1, uid);
+            ps.setString(2, "Active");
+            ps.setString(3, LocalDateTime.now().toString());
+            ps.execute();
+        }catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+            return;
             
+        }finally{
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e.toString());
+            }
+        }
+    }
+    
+    public boolean RegistrarSales(Sales sl){
+        String sqlCart = "INSERT INTO cartproducts (transactionId ,item, qty, price, tax) VALUES (?,?,?,?,?)";
+        try {
+            con = cn.getConnection();
+            
+            // Cart DB
+            ps = con.prepareStatement(sqlCart);
             ps.setString(1,sl.getTransactionId());
             ps.setString(2, sl.getItem());
             ps.setInt(3, sl.getQty());
@@ -52,7 +97,6 @@ public class Sales_Dao {
            ps = con.prepareStatement(sql);
            rs = ps.executeQuery();
            
-           
            while (rs.next()) {               
                Sales pr = new Sales();
                //pr.setTransactionId(rs.getSt);
@@ -66,6 +110,29 @@ public class Sales_Dao {
            System.out.println(e.toString());
        }
        return ListaCl;
+   }
+   
+   public List<Sales> GetTransactionCart(String tr){
+       
+       String sql = "SELECT * FROM cartproducts WHERE transactionId='" + tr + "'";
+       List<Sales> ListSales = new ArrayList();
+       try{
+           con = cn.getConnection();
+           ps = con.prepareStatement(sql);
+           rs = ps.executeQuery();
+           while(rs.next()){
+            Sales sl = new Sales();
+            sl.setTransactionId(rs.getString("transactionId"));
+            sl.setItem(rs.getString("item"));
+            sl.setQty(rs.getInt("qty"));
+            sl.setPrice(rs.getDouble("price"));
+            sl.setTax(rs.getString("tax"));
+            ListSales.add(sl);
+           }
+       }catch(SQLException e) {
+           System.out.println(e.toString());
+       }
+       return ListSales;
    }
   
     

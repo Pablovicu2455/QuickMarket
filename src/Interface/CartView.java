@@ -1,12 +1,19 @@
 package Interface;
 
 
+import Classes.Sales;
+import Classes.Sales_Dao;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 public class CartView extends javax.swing.JFrame {
 
     public CartView() {
         initComponents();
     }
-
+   
+     Sales sl = new Sales();
+     Sales_Dao sld = new Sales_Dao();
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -14,7 +21,7 @@ public class CartView extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tb_Cart = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -23,27 +30,30 @@ public class CartView extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         ExitButtom = new javax.swing.JButton();
+        bt_refresh_Sale = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tb_Cart.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id Item", "Item", "Quantity", "Regular Price", "Mem Price", "Tax"
+                "Item", "Quantity", "Price"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(150);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(155);
-            jTable1.getColumnModel().getColumn(3).setPreferredWidth(150);
-            jTable1.getColumnModel().getColumn(4).setPreferredWidth(150);
-            jTable1.getColumnModel().getColumn(5).setPreferredWidth(150);
+        tb_Cart.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tb_CartMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tb_Cart);
+        if (tb_Cart.getColumnModel().getColumnCount() > 0) {
+            tb_Cart.getColumnModel().getColumn(0).setPreferredWidth(150);
+            tb_Cart.getColumnModel().getColumn(1).setPreferredWidth(155);
+            tb_Cart.getColumnModel().getColumn(2).setPreferredWidth(150);
         }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -106,7 +116,7 @@ public class CartView extends javax.swing.JFrame {
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -126,6 +136,13 @@ public class CartView extends javax.swing.JFrame {
             }
         });
 
+        bt_refresh_Sale.setText("Refresh");
+        bt_refresh_Sale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_refresh_SaleActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -133,6 +150,8 @@ public class CartView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel8)
+                .addGap(81, 81, 81)
+                .addComponent(bt_refresh_Sale, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(ExitButtom)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -148,6 +167,10 @@ public class CartView extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(ExitButtom, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(19, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(bt_refresh_Sale)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -176,6 +199,23 @@ public class CartView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+     DefaultTableModel model = new DefaultTableModel();
+     
+    public void List_TableCart() {
+        String transactionUid = sld.getLatestActiveTransactionUID();
+        System.out.println(transactionUid);
+        List<Sales> ListarSld = sld.GetTransactionCart(transactionUid);
+        model = (DefaultTableModel) tb_Cart.getModel();
+        Object[] ob = new Object[6];
+        for (int i = 0; i < ListarSld.size(); i++) {
+            ob[0] = ListarSld.get(i).getItem();
+            ob[1] = ListarSld.get(i).getQty();
+            ob[2] = ListarSld.get(i).getPrice();
+            model.addRow(ob);
+        }
+        tb_Cart.setModel(model);
+    }
+    
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -193,6 +233,17 @@ public class CartView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
 
+    private void bt_refresh_SaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_refresh_SaleActionPerformed
+        // TODO add your handling code here:
+        List_TableCart();
+       
+    }//GEN-LAST:event_bt_refresh_SaleActionPerformed
+
+    private void tb_CartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_CartMouseClicked
+        // TODO add your handling code here:
+        int fila = tb_Cart.rowAtPoint(evt.getPoint());
+    }//GEN-LAST:event_tb_CartMouseClicked
+
    
     public static void main(String args[]) {
         
@@ -205,6 +256,7 @@ public class CartView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ExitButtom;
+    private javax.swing.JButton bt_refresh_Sale;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton8;
@@ -214,6 +266,6 @@ public class CartView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tb_Cart;
     // End of variables declaration//GEN-END:variables
 }

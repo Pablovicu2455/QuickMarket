@@ -355,7 +355,8 @@ public class AddSale extends javax.swing.JFrame {
     }//GEN-LAST:event_ExitButtomActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       CartView jf2 = new CartView();
+       sld.SaveTransactionUid(uid);
+        CartView jf2 = new CartView();
         jf2.show();
 
         dispose(); 
@@ -371,7 +372,7 @@ public class AddSale extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_txt_item_productKeyPressed
-  public void List_TableProduct() {
+  public void List_Products() {
         List<Productos> ListarPr = prd.ListarProductos();
         modelo = (DefaultTableModel) table_product.getModel();
         Object[] ob = new Object[6];
@@ -400,7 +401,8 @@ public class AddSale extends javax.swing.JFrame {
 
     private void bt_refresh_SaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_refresh_SaleActionPerformed
         // TODO add your handling code here:
-        List_TableProduct();
+        List_Products();
+
     }//GEN-LAST:event_bt_refresh_SaleActionPerformed
 
     private void bt_addcartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_addcartActionPerformed
