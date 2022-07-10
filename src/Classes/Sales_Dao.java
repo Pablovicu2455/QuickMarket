@@ -16,7 +16,7 @@ public class Sales_Dao {
     Conexion cn = new Conexion();
     Connection con;
     PreparedStatement ps;
-    ResultSet rs;
+    ResultSet rs; 
 
     public String getLatestActiveTransactionUID(){
         String sql = "SELECT * FROM transactions WHERE state='Active' ORDER BY date DESC LIMIT 1";
@@ -135,5 +135,28 @@ public class Sales_Dao {
        return ListSales;
    }
   
+    public void DeleteAllTransaction(String tr){
+        String sql = "DELETE FROM cartproducts WHERE transactionId='" + tr + "'";
+        try{
+           con = cn.getConnection();
+           ps = con.prepareStatement(sql);
+           int number = ps.executeUpdate();
+           System.out.println("Number deleted items: " + number);
+       }catch(SQLException e) {
+           System.out.println(e.toString());
+       }
+    }
     
+    public void DeleteSingleItemInTransaction(String trId, String item){
+        String sql = "DELETE FROM cartproducts WHERE transactionId='" + trId + "' AND  item='" + item + "'";
+        try{
+           con = cn.getConnection();
+           ps = con.prepareStatement(sql);
+           int number = ps.executeUpdate();
+           System.out.println("Number deleted items: " + number);
+       }catch(SQLException e) {
+           System.out.println(e.toString());
+           JOptionPane.showMessageDialog(null, "Make sure item "+ item +"exists on cart");
+       }
+    }                                          
 }

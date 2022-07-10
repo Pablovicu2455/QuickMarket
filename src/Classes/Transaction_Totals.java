@@ -47,6 +47,11 @@ public class Transaction_Totals {
 	
 	finalTotal = subtotal + taxTotal;
 	
+        // Trunncate
+        subtotal = Math.floor(subtotal * 100.00) / 100.00;
+        taxTotal = Math.floor(taxTotal * 100.00) / 100.00;
+        finalTotal = Math.floor(finalTotal * 100.00) / 100.00;
+        
 	Transaction_Totals transactionTotals = new Transaction_Totals(totalItemsSold, subtotal, taxTotal, finalTotal);
 	
 	return transactionTotals;

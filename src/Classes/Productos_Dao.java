@@ -23,8 +23,8 @@ public class Productos_Dao {
             ps = con.prepareStatement(sql);
             ps.setString(1, pr.getItem());
             ps.setInt(2, pr.getQty());
-            ps.setDouble(3, pr.getPrice());
-            ps.setDouble(4, pr.getMemprice());
+            ps.setString(3, Double.toString(pr.getPrice()));
+            ps.setString(4, Double.toString(pr.getMemprice()));
             ps.setString(5,pr.getTax());
             ps.execute();
             return true;

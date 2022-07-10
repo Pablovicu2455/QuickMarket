@@ -1,4 +1,0 @@
-2022-07-10T02:40:35.987916100
-TRANSACTION: fddc972c-4fa4-4acd-aa88-ee66392f78e3
-ITEM                  QUANTITY              UNIT PRICE            TOTAL                 
-gg                    4                     30.000000             20.000000             

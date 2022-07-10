@@ -1,0 +1,12 @@
+2022-07-10T11:22:21.981290700
+TRANSACTION: 27f8a1c0-fde5-49bd-bff2-ee36bf15c9e0
+ITEM                  QUANTITY              UNIT PRICE            TOTAL                 
+colatax               2                     0.01                  0.02                  
+**********************
+TOTAL NUMBER OF ITEMS SOLD: 2
+SUB-TOTAL: $0.02
+TAX (6.5%): $0.0
+TOTAL: $0.02
+CASH: $3.68
+CHANGE: $3.66
+**********************
