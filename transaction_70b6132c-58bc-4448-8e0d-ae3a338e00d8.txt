@@ -1,0 +1,14 @@
+2022-07-10T02:43:24.794008800
+TRANSACTION: 70b6132c-58bc-4448-8e0d-ae3a338e00d8
+ITEM                  QUANTITY              UNIT PRICE            TOTAL                 
+Cola                  3                     1.000000              3.000000              
+Fanta                 5                     2.000000              10.000000             
+Milk                  2                     5.000000              10.000000             
+**********************
+TOTAL NUMBER OF ITEMS SOLD: 10
+SUB-TOTAL: $23.0
+TAX (6.5%): $0.65
+TOTAL: $23.65
+CASH: $55.0
+CHANGE: $31.35
+**********************

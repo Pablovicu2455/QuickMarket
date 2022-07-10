@@ -4,12 +4,21 @@ package Interface;
 import Classes.Sales;
 import Classes.Sales_Dao;
 import Classes.Transaction_Totals;
+import java.io.File;
+import java.io.FileWriter;
+import java.time.LocalDateTime;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class CartView extends javax.swing.JFrame {
 
+    String transactionUid;
     List<Sales> ListarSld;
+    Transaction_Totals tt;
+    Double transactionTotal = 0.0;
+    Double amountToPay = 0.0;
+    Double amountPaid = 0.0;
     
     public CartView() {
         initComponents();
@@ -40,13 +49,13 @@ public class CartView extends javax.swing.JFrame {
         txt_tax_cart = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_cash_paid = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         ExitButtom = new javax.swing.JButton();
         bt_refresh_Sale = new javax.swing.JButton();
-        txt_pay = new javax.swing.JButton();
+        txt_pay_print = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -144,7 +153,7 @@ public class CartView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_cash_paid, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -153,7 +162,7 @@ public class CartView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel11)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_cash_paid, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -268,11 +277,11 @@ public class CartView extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        txt_pay.setBackground(new java.awt.Color(153, 255, 153));
-        txt_pay.setText("PAY + PRINT RECIPT");
-        txt_pay.addActionListener(new java.awt.event.ActionListener() {
+        txt_pay_print.setBackground(new java.awt.Color(153, 255, 153));
+        txt_pay_print.setText("PAY + PRINT RECIPT");
+        txt_pay_print.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_payActionPerformed(evt);
+                txt_pay_printActionPerformed(evt);
             }
         });
 
@@ -288,7 +297,7 @@ public class CartView extends javax.swing.JFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(120, 120, 120)
-                        .addComponent(txt_pay, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_pay_print, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -303,7 +312,7 @@ public class CartView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_pay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(txt_pay_print, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -311,45 +320,18 @@ public class CartView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void RefreshTransactionTotals(List<Sales> salesTransaction, double tax){
-        Transaction_Totals tt = CalculateTransactionTotals(salesTransaction, tax);
+        tt = Transaction_Totals.CalculateTransactionTotals(salesTransaction, tax);
         txt_items_sold.setText(Integer.toString(tt.getTotalItemsSold()));
         txt_sub_total.setText(Double.toString(tt.getSubtotal()));
         txt_tax_cart.setText(Double.toString(tt.getTax()));
         txt_total_cart.setText(Double.toString(tt.getTotal()));
-    }
-    
-    public Transaction_Totals CalculateTransactionTotals(List<Sales> salesInTransaction, double tax){
-	
-	int totalItemsSold = 0;
-	double subtotal = 0.0;
-	double taxTotal = 0.0;
-	double finalTotal = 0.0;
-	
-	// Go through all items and calculate totals
-	for(Sales item : salesInTransaction){
-            // Item tax 
-            if(item.getTax().compareTo("Taxable") == 0){
-                    taxTotal += item.getPrice()*item.getQty()*tax;
-            }
-
-            // Add price for subtotal
-            subtotal = subtotal + (item.getPrice()*item.getQty());
-
-            // Increment items sold
-            totalItemsSold += item.getQty();
-	}
-	
-	finalTotal = subtotal + taxTotal;
-	
-	Transaction_Totals transactionTotals = new Transaction_Totals(totalItemsSold, subtotal, taxTotal, finalTotal);
-	
-	return transactionTotals;
+        transactionTotal = tt.getTotal();
     }
     
      DefaultTableModel model = new DefaultTableModel();
      
     public void List_TableCart() {
-        String transactionUid = sld.getLatestActiveTransactionUID();
+        transactionUid = sld.getLatestActiveTransactionUID();
         System.out.println(transactionUid);
         ListarSld = sld.GetTransactionCart(transactionUid);
         model = (DefaultTableModel) tb_Cart.getModel();
@@ -381,19 +363,59 @@ public class CartView extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void bt_refresh_SaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_refresh_SaleActionPerformed
-        // TODO add your handling code here:
-        List_TableCart();
-       
+        List_TableCart(); 
     }//GEN-LAST:event_bt_refresh_SaleActionPerformed
 
     private void tb_CartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_CartMouseClicked
-        // TODO add your handling code here:
+
         int fila = tb_Cart.rowAtPoint(evt.getPoint());
     }//GEN-LAST:event_tb_CartMouseClicked
 
-    private void txt_payActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_payActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_payActionPerformed
+    String outputFile;
+    private void txt_pay_printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_pay_printActionPerformed
+        System.out.println(txt_cash_paid.getText());
+        amountPaid = Double.parseDouble(txt_cash_paid.getText());
+        // Check amount paid is greater than transaction total
+        if(amountPaid < transactionTotal){
+            JOptionPane.showMessageDialog(null, "Amount paid is less than transaction total");
+            return;
+        }
+        
+        // Show change owned
+        amountToPay = amountPaid - transactionTotal;
+        JOptionPane.showMessageDialog(null, "Change: " + amountToPay);
+        
+        // Print to file
+        outputFile = "transaction_" + transactionUid + ".txt";
+        //File nf = new File(outputFile);
+        try{
+            FileWriter fw = new FileWriter(outputFile);
+            
+            fw.write(LocalDateTime.now().toString() + "\n");
+            fw.write("TRANSACTION: " + transactionUid + "\n");
+            
+            fw.write(String.format("%-22s%-22s%-22s%-22s", "ITEM","QUANTITY","UNIT PRICE","TOTAL") + "\n");
+           
+            for(Sales sl : ListarSld){
+                Double unitTotal = sl.getPrice()*sl.getQty();
+                String tableRow = String.format("%-22s%-22d%-22f%-22f", sl.getItem(), sl.getQty(), sl.getPrice(), unitTotal);
+                fw.write(tableRow+ "\n");
+            }
+            
+            fw.write("**********************"+ "\n");
+            fw.write("TOTAL NUMBER OF ITEMS SOLD: " + tt.getTotalItemsSold()+ "\n");
+            fw.write("SUB-TOTAL: $" + tt.getSubtotal()+ "\n");
+            fw.write("TAX (6.5%): $" + tt.getTax()+ "\n");
+            fw.write("TOTAL: $" + tt.getTotal()+ "\n");
+            fw.write("CASH: $" + amountPaid+ "\n");
+            fw.write("CHANGE: $" + amountToPay+ "\n");
+            fw.write("**********************"+ "\n");
+            fw.close();
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Cannot write reciept to file");
+        }
+        
+    }//GEN-LAST:event_txt_pay_printActionPerformed
 
    
     public static void main(String args[]) {
@@ -422,10 +444,10 @@ public class CartView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tb_Cart;
+    private javax.swing.JTextField txt_cash_paid;
     private javax.swing.JLabel txt_items_sold;
-    private javax.swing.JButton txt_pay;
+    private javax.swing.JButton txt_pay_print;
     private javax.swing.JLabel txt_sub_total;
     private javax.swing.JLabel txt_tax_cart;
     private javax.swing.JLabel txt_total_cart;
